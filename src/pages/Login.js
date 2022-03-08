@@ -31,7 +31,8 @@ class Login extends React.Component {
   handleButton = async () => {
     this.setState({ isLoading: true });
     const { loginName } = this.state;
-    await createUser({ name: loginName });
+    const request = await createUser({ name: loginName });
+    console.log(request);
     this.setState({
       isLoading: false,
       redirect: true,
