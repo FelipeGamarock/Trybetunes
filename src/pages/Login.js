@@ -1,4 +1,5 @@
 import React from 'react';
+const MIN_LOGIN_LENGTH = 3;
 
 class Login extends React.Component {
   constructor() {
@@ -7,20 +8,28 @@ class Login extends React.Component {
     this.state = {
       loginInput: '',
       isButtonDisable: true,
-      loading: false,
-      redirect: false
+      isLoading: false,
     }
   }
 
   onInputChange = ({target}) => {
-    const { name, value } = target
+    const { name, value } = target;
     this.setState({
       [name]: value,
-    })
+    });
+    if (value.length >= MIN_LOGIN_LENGTH) {
+      this.setState({ isButtonDisable: false });
+    } else {
+      this.setState({ isButtonDisable: true });
+    }
   }
 
+  // handleClick = () => {
+
+  // }
+
   render() {
-    const { loginInput, isButtonDisabled, loading, shouldRedirect } = this.state;
+    const { loginInput, isButtonDisable, isLoading } = this.state;
     return (
       <div data-testid="page-login">
         <label>
@@ -30,13 +39,14 @@ class Login extends React.Component {
             type="text"
             name="loginInput"
             onChange={this.onInputChange}
-            value={loginInput}
+            value={ loginInput }
           />
         </label>
         <button
           type="submit"
           data-testid="login-submit-button"
-          onClick={}
+          disabled={ isButtonDisable }
+          // onClick={this.handleClick}
         >
           Entrar
         </button>
