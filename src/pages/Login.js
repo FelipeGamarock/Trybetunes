@@ -9,7 +9,7 @@ class Login extends React.Component {
     super();
 
     this.state = {
-      loginInput: '',
+      name: '',
       isButtonDisable: true,
       isLoading: false,
       redirect: false,
@@ -30,9 +30,8 @@ class Login extends React.Component {
 
   handleButton = async () => {
     this.setState({ isLoading: true });
-    const { loginName } = this.state;
-    const request = await createUser({ name: loginName });
-    console.log(request);
+    const { name } = this.state;
+    await createUser({ name });
     this.setState({
       isLoading: false,
       redirect: true,
@@ -40,7 +39,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { loginInput, isButtonDisable, isLoading, redirect } = this.state;
+    const { name, isButtonDisable, isLoading, redirect } = this.state;
     if (isLoading) return <Loading />;
 
     return (
@@ -50,10 +49,10 @@ class Login extends React.Component {
           <input
             data-testid="login-name-input"
             type="text"
-            name="loginInput"
+            name="name"
             id="loginInput"
             onChange={ this.onInputChange }
-            value={ loginInput }
+            value={ name }
           />
         </label>
         <button
