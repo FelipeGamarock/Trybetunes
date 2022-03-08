@@ -1,6 +1,9 @@
 import React from 'react';
-const MIN_LOGIN_LENGTH = 3;
+import { Redirect } from 'react-router-dom';
+import { createUser } from '../services/userAPI';
+import Loading from '../componentes/Loading';
 
+const MIN_LOGIN_LENGTH = 3;
 class Login extends React.Component {
   constructor() {
     super();
@@ -9,10 +12,11 @@ class Login extends React.Component {
       loginInput: '',
       isButtonDisable: true,
       isLoading: false,
-    }
+      redirect: false,
+    };
   }
 
-  onInputChange = ({target}) => {
+  onInputChange = ({ target }) => {
     const { name, value } = target;
     this.setState({
       [name]: value,
@@ -24,32 +28,42 @@ class Login extends React.Component {
     }
   }
 
-  // handleClick = () => {
-
-  // }
+  handleButton = async () => {
+    this.setState({ isLoading: true });
+    const { loginName } = this.state;
+    await createUser({ name: loginName });
+    this.setState({
+      isLoading: false,
+      redirect: true,
+    });
+  }
 
   render() {
-    const { loginInput, isButtonDisable, isLoading } = this.state;
+    const { loginInput, isButtonDisable, isLoading, redirect } = this.state;
+    if (isLoading) return <Loading />;
+
     return (
       <div data-testid="page-login">
-        <label>
+        <label htmlFor="loginInput">
           <h1>Login</h1>
           <input
             data-testid="login-name-input"
             type="text"
             name="loginInput"
-            onChange={this.onInputChange}
+            id="loginInput"
+            onChange={ this.onInputChange }
             value={ loginInput }
           />
         </label>
         <button
-          type="submit"
+          type="button"
           data-testid="login-submit-button"
           disabled={ isButtonDisable }
-          // onClick={this.handleClick}
+          onClick={ this.handleButton }
         >
           Entrar
         </button>
+        {redirect ? <Redirect to="search" /> : ''}
       </div>
     );
   }
