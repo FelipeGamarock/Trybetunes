@@ -12,6 +12,7 @@ class Search extends React.Component {
       searchInput: '',
       isButtonDisable: true,
       isLoading: false,
+      isALbumRequested: false,
       artistName: '',
       albuns: [],
     };
@@ -38,12 +39,14 @@ class Search extends React.Component {
       searchInput: '',
       albuns: data,
       isLoading: false,
+      isALbumRequested: true,
     });
   }
 
   render() {
-    const { searchInput, isButtonDisable, isLoading, albuns, artistName } = this.state;
-    if (isLoading) return <Loading />
+    const { searchInput, isButtonDisable, isLoading, albuns, artistName, isALbumRequested } = this.state;
+    if (isLoading) return <Loading />;
+    console.log(albuns);
     return (
       <div data-testid="page-search">
         <Header />
@@ -66,18 +69,22 @@ class Search extends React.Component {
           </button>
         </form>
 
-        { albuns.length === 0 ? <p>Nenhum álbum foi encontrado</p>
-          : (
+        { isALbumRequested && !albuns.length && (<p>Nenhum álbum foi encontrado</p>) }
+
+        { isALbumRequested && albuns.length !== 0 && (
+          <div>
+            <p>
+              Resultado de álbuns de:
+              {` ${artistName}`}
+            </p>
             <div>
-              <p>
-                Resultado de álbuns de:
-                {` ${artistName}`}
-              </p>
-              <div>
-                Album
-              </div>
+              <p>{albuns[0].collectionName}</p>
             </div>
-          )}
+          </div>
+
+        )}
+          
+          
       </div>
     );
   }
