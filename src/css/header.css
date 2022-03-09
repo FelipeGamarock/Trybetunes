@@ -1,0 +1,22 @@
+.header-user {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.nav-link {
+  background-color: aqua;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: rgb(46, 33, 33);
+  text-align: center;
+  text-decoration: none;
+  width: 30%;
+}
