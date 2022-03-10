@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../componentes/Header';
 import Loading from '../componentes/Loading';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
@@ -44,7 +45,13 @@ class Search extends React.Component {
   }
 
   render() {
-    const { searchInput, isButtonDisable, isLoading, albuns, artistName, isALbumRequested } = this.state;
+    const {
+      searchInput,
+      isButtonDisable,
+      isLoading,
+      albuns,
+      artistName,
+      isALbumRequested } = this.state;
     if (isLoading) return <Loading />;
     console.log(albuns);
     return (
@@ -73,18 +80,25 @@ class Search extends React.Component {
 
         { isALbumRequested && albuns.length !== 0 && (
           <div>
-            <p>
+            <h2>
               Resultado de álbuns de:
               {` ${artistName}`}
-            </p>
-            <div>
-              <p>{albuns[0].collectionName}</p>
-            </div>
+            </h2>
+            <ul>
+              { albuns.map(({ artistName: name, collectionId, collectionName }) => (
+                <li key={ collectionId }>
+                  <Link
+                    to={ `/album/${collectionId}` }
+                    data-testid={ `link-to-album-${collectionId}` }
+                  >
+                    <h3>{collectionName}</h3>
+                    <p>{name}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-
         )}
-          
-          
       </div>
     );
   }
