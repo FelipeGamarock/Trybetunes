@@ -4,6 +4,7 @@ import Header from '../componentes/Header';
 import getMusics from '../services/musicsAPI';
 import Loading from '../componentes/Loading';
 import MusicCard from '../componentes/MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class Album extends React.Component {
   constructor() {
@@ -13,11 +14,18 @@ class Album extends React.Component {
       songs: [],
       collectionName: '',
       artistName: '',
+      favorites: [],
     };
   }
 
   async componentDidMount() {
     this.getSongsFromAlbum();
+    this.setState({ isLoading: true });
+    const favoriteSongs = await getFavoriteSongs();
+    this.setState({
+      isLoading: false,
+      favorites: favoriteSongs,
+    });
   }
 
   getSongsFromAlbum = async () => {
@@ -34,7 +42,8 @@ class Album extends React.Component {
   }
 
   render() {
-    const { isLoading, songs, artistName, collectionName } = this.state;
+    const { isLoading, songs, artistName, collectionName, favorites } = this.state;
+    console.log(favorites);
     if (isLoading) return <Loading />;
     return (
       <div data-testid="page-album">
